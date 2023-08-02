@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExamentionOmran", "ExamentionOmran\ExamentionOmran.csproj", "{B1400B18-D5BB-4D22-ACBB-48BCAF09F7F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Examention.Data", "Examention.Data\Examention.Data.csproj", "{AC1EF97D-ECC3-427D-B078-06C7C49AA817}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1400B18-D5BB-4D22-ACBB-48BCAF09F7F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1400B18-D5BB-4D22-ACBB-48BCAF09F7F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1400B18-D5BB-4D22-ACBB-48BCAF09F7F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1400B18-D5BB-4D22-ACBB-48BCAF09F7F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC1EF97D-ECC3-427D-B078-06C7C49AA817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC1EF97D-ECC3-427D-B078-06C7C49AA817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC1EF97D-ECC3-427D-B078-06C7C49AA817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC1EF97D-ECC3-427D-B078-06C7C49AA817}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC77D84D-FDE7-4DC3-8E28-4CC992EA0E18}
+	EndGlobalSection
+EndGlobal
