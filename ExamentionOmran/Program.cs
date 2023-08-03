@@ -1,5 +1,7 @@
+using Examention.Api.AutoMapper;
 using Examention.Data.ApplicationContext;
 using Examention.Data.Models;
+using Examention.EF.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,11 +21,11 @@ namespace ExamentionOmran
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<Context>(Options => Options
             .UseSqlServer(builder.Configuration.GetConnectionString("Data")));
-
+            builder.Services.AddAutoMapper(typeof(ExamMapper));
             builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
 
 
-
+            builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 
             var app = builder.Build();
@@ -36,6 +38,7 @@ namespace ExamentionOmran
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
