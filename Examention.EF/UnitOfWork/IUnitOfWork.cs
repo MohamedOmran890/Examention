@@ -1,5 +1,6 @@
 ﻿using Examention.Data.Models;
 using Examention.EF.Repository.ExamRepository;
+using Examention.EF.Repository.ExamStudentRepository;
 using Examention.EF.Repository.GenricRepository;
 using Examention.EF.Repository.QuestionRepository;
 using System;
@@ -14,6 +15,9 @@ namespace Examention.EF.UnitOfWork
     {
         IExamRepository Exams { get; }
         IQuestionRepository Questions { get; }
+        IExamStudentRepository ExamStudents { get; }
+        IGenricRepository<Student> Students { get; }
+        IGenricRepository<Doctor> Doctors { get; }
         int Save();
     }
 }

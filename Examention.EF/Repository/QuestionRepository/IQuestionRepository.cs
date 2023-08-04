@@ -11,6 +11,7 @@ namespace Examention.EF.Repository.QuestionRepository
     public interface IQuestionRepository:IGenricRepository<Question>
     {
         Task<IEnumerable<Choice>> ChoiceByQuetionId(int Id);
+        Task<IEnumerable<Choice>> GetAll(int examId);
 
     }
 }

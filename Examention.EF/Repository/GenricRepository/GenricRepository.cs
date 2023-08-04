@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Examention.EF.Repository.GenricRepository
 {
-    public class GenricRepository<T> : IGenricRepository<T> where T : class
+    public class GenricRepository<T> : IGenricRepository<T> where T: class
     {
         private readonly Context _Context;
 
@@ -74,8 +74,8 @@ namespace Examention.EF.Repository.GenricRepository
                 return null;
             try
             {
-                _Context.Attach(newObj);
-                _Context.Set<T>().Update(newObj);
+              _Context.Set<T>().Attach(newObj);
+                _Context.Entry(newObj).State= EntityState.Modified;
                 _Context.SaveChanges();
                 return newObj;
             }
@@ -85,6 +85,5 @@ namespace Examention.EF.Repository.GenricRepository
             }
 
         }
-
     }
 }
