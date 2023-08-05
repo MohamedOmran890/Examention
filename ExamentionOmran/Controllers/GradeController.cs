@@ -2,17 +2,21 @@
 using Examention.Api.DTO;
 using Examention.Data.Models;
 using Examention.EF.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Examention.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GradeController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        
 
         public GradeController(IUnitOfWork unitOfWork,IMapper mapper)
         {
@@ -60,16 +64,17 @@ namespace Examention.Api.Controllers
             if(studentId == null||examId<0)
                 return BadRequest();
             var StudenGrade =_mapper.Map<Grades>(await _unitOfWork.ExamStudents.GetStudentGradeInExam(studentId, examId));
-            return Ok(studentId);
+            return Ok(StudenGrade);
         }
         [HttpPost]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult>Create(StudentGradeDto StudentgradeDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
             var examStudent = await _unitOfWork.ExamStudents.Create(_mapper.Map<ExamStudent>(StudentgradeDto));
 
-            return Ok(examStudent);
+            return Ok(StudentgradeDto);
         }
 
 

@@ -12,9 +12,9 @@ namespace Examention.Data.Models
     {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public User User { get; set; }
+        public virtual User User { get; set; }
         public int LevelId { get; set; }
-        public Level Level { get; set; }
-        public ICollection<ExamStudent> ExamStudent { get; set; }
+        public virtual Level Level { get; set; }
+        public virtual ICollection<ExamStudent> ExamStudent { get; set; }
     }
 }

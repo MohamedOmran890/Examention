@@ -23,10 +23,9 @@ namespace Examention.EF.Repository.QuestionRepository
             return (IEnumerable<Choice>)await _Context.Questions.Where(q => q.Id == Id).Select(c=>c.Choices).ToListAsync();
         }
 
-        public async Task<IEnumerable<Choice>> GetAll(int examId)
+        public async Task<IEnumerable<Question>> GetQuestionByExamId(int examId)
         {
-            return (IEnumerable<Choice>)await _Context.Questions.Where(e => e.ExamId == examId).ToListAsync();
-            throw new NotImplementedException();
+            return await _Context.Questions.Where(e => e.ExamId == examId).ToListAsync();
         }
     }
 }

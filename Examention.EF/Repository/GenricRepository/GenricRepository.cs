@@ -67,16 +67,16 @@ namespace Examention.EF.Repository.GenricRepository
             return await _Context.Set<T>().AsNoTracking().ToListAsync();
         }
 
-        public T Update(int Id, T newObj)
+        public async Task<T> Update(int Id, T newObj)
         {
-            var oldObject = GetById(Id);
+            var oldObject =await GetById(Id);
             if (oldObject == null)
                 return null;
             try
             {
-              _Context.Set<T>().Attach(newObj);
-                _Context.Entry(newObj).State= EntityState.Modified;
-                _Context.SaveChanges();
+                //_Context.Set<T>().Update(newObj);
+                _Context.Entry(oldObject).CurrentValues.SetValues(newObj);
+                await _Context.SaveChangesAsync();
                 return newObj;
             }
             catch(Exception ex)

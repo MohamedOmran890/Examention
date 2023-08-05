@@ -10,7 +10,7 @@ namespace Examention.EF.Repository.GenricRepository
     {
         public Task<T> GetById(int Id);
         public Task<List<T>> GetList();
-        public T Update(int Id, T NewObj);
+        public Task<T> Update(int Id, T NewObj);
         public Task<T> Create(T NewObj);
         public Task<int> DeleteById(int Id);
     }

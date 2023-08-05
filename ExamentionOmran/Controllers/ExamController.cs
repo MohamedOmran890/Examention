@@ -2,6 +2,7 @@
 using Examention.Api.DTO;
 using Examention.Data.Models;
 using Examention.EF.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,7 @@ namespace Examention.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var exams = _mapper.Map<IEnumerable<ExamDto>>(await _unitOfWork.Exams.GetList());
+            var exams = _mapper.Map<IEnumerable<ExamCreateDto>>(await _unitOfWork.Exams.GetList());
             return Ok(exams);
         }
         [HttpGet("GetById/{Id:int}")]
@@ -31,26 +32,19 @@ namespace Examention.Api.Controllers
             var exam=await _unitOfWork.Exams.GetById(Id);
             if(exam==null)
                 return NoContent();
-            var examDto = _mapper.Map<ExamQuestionDto>(exam);
-            examDto.Questions = (ICollection<Question>)_mapper.Map<IEnumerable<QuestionDto>>(exam.Questions);
-
-            foreach(var question in examDto.Questions)
-            {
-                var choices = _unitOfWork.Questions.ChoiceByQuetionId(question.Id);
-                question.Choices = (ICollection<Choice>)_mapper.Map<ICollection<ChoiceDto>>(choices);
-            }
-   
+            var examDto=_mapper.Map<ExamGetDto>(exam);
             return Ok(examDto);
         }
         [HttpGet("GetByLevel/{LevelId:int}")]
         public async Task<IActionResult>GetExamByLevel(int LevelId)
         {
-            var exams = _mapper.Map<IEnumerable<ExamDto>>(await _unitOfWork.Exams.GetExamByLevel(LevelId));
+            var exams = _mapper.Map<IEnumerable<ExamCreateDto>>(await _unitOfWork.Exams.GetExamByLevel(LevelId));
             return Ok(exams);
 
         }
         [HttpPost("{Create}")]
-        public IActionResult Create(ExamDto exam)
+        [Authorize(Roles ="Doctor")]
+        public IActionResult Create(ExamCreateDto exam)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -58,32 +52,51 @@ namespace Examention.Api.Controllers
             _unitOfWork.Exams.Create(newExam);
             return Ok(exam);
         }
-        [HttpPost("CreateExamByQuestion")]
-        public IActionResult CreateExamByQuestion(ExamQuestion examQuestion)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest();
-            var exam = _mapper.Map<Exam>(examQuestion);
-            var affect=_unitOfWork.Exams.Create(exam);
-            if(affect!=null)
-            return Ok(exam);
-            return BadRequest();
+        //[HttpPost("CreateExamByQuestion")]
+        //public IActionResult CreateExamByQuestion(ExamQuestion examQuestion)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest();
+        //    var exam = _mapper.Map<Exam>(examQuestion);
 
-        }
+        //    foreach(var questionDto in examQuestion.Questions)
+        //    {
+        //        var question = _mapper.Map<Question>(questionDto);
+        //        question.Choices = _mapper.Map<List<Choice>>(questionDto.Choices);
+        //        exam.Questions.Add(question);
+        //    }
+        //    var affect=_unitOfWork.Exams.Create(exam);
+        //    if(affect!=null)
+        //    return Ok(exam);
+        //    return BadRequest();
+
+        //}
         [HttpPut]
-        public IActionResult EditExam(int examId,ExamDto examDto)
+        [Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> EditExam(int examId,ExamCreateDto examDto)
         {
-            var exam=_unitOfWork.Exams.GetById(examId);
+            var exam=await _unitOfWork.Exams.GetById(examId);
             if (exam == null)
                 return NotFound();
-            var newExam=_mapper.Map<Exam>(examDto);
-            var examAfterUpdate=_unitOfWork.Exams.Update(examId, newExam);
+            //var newExam=_mapper.Map<Exam>(examDto);
+            Exam newExam = new Exam
+            {
+                Id=examId,
+                Name = examDto.Name,
+                LevelId = examDto.LevelId,
+                DoctorId = examDto.DoctorId,
+                Description = examDto.Description,
+                Image = examDto.Image,
+
+            };
+            var examAfterUpdate=await _unitOfWork.Exams.Update(examId, newExam);
             if (examAfterUpdate != null)
                 return Ok(examDto);
             return BadRequest();
         }
 
         [HttpDelete("{examId}")]
+        [Authorize(Roles = "Doctor")]
         public async Task<IActionResult> DeleteExam(int examId)
         {
             var exam = _unitOfWork.Exams.GetById(examId);

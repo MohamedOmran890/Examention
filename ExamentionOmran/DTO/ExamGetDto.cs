@@ -1,8 +1,6 @@
-﻿using Examention.Data.Models;
-
-namespace Examention.Api.DTO
+﻿namespace Examention.Api.DTO
 {
-    public class ExamDto
+    public class ExamGetDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -10,8 +8,5 @@ namespace Examention.Api.DTO
         public string? Description { get; set; }
         public int LevelId { get; set; }
         public int DoctorId { get; set; }
-        //public int LevelId { get; set; }
-        //public Level Level { get; set; }
-
     }
 }
